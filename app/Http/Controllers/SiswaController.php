@@ -6,7 +6,6 @@ use App\Models\Siswa;
 use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\tahun_ajar;
-use App\Models\TahunAjar;
 use Illuminate\Http\Request;
 
 class SiswaController extends Controller
@@ -82,4 +81,17 @@ class SiswaController extends Controller
         return redirect()->route('siswa.index')
             ->with('success', 'Siswa berhasil dihapus.');
     }
+
+    public function show(Siswa $siswa)
+    {
+        // load relasi yang dibutuhkan
+        $siswa->load(['kelas', 'jurusan', 'tahunAjar', 'kelasDetails.kelas', 'kelasDetails.tahunAjar']);
+
+        // semua kelas untuk dropdown modal edit
+        $allKelas = Kelas::all();
+
+        return view('siswa.detail', compact('siswa', 'allKelas'));
+    }
+
+
 }

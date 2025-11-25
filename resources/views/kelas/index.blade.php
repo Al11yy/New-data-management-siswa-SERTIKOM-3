@@ -1,50 +1,57 @@
 <x-app-layout>
-<div class="container mt-4">
+    <div class="p-6">
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+        @if (session('success'))
+            <div class="mb-6 p-4 bg-green-500/20 border border-green-500/30 text-green-300 rounded-xl">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    <div class="d-flex justify-content-between mb-3">
-        <h3>Daftar Kelas</h3>
-        <a href="{{ route('kelas.create') }}" class="btn btn-primary">Tambah Kelas</a>
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-extrabold text-white">Daftar Kelas</h1>
+            <a href="{{ route('kelas.create') }}"
+                class="px-5 py-2 bg-sky-500 text-white font-medium rounded-xl shadow-lg hover:bg-sky-600 transition duration-200 transform hover:scale-105">
+                + Tambah Kelas
+            </a>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 overflow-hidden">
+            <table class="w-full text-left text-sm text-white">
+                <thead class="bg-white/15">
+                    <tr>
+                        <th class="p-4">Nama Kelas</th>
+                        <th class="p-4">Level</th>
+                        <th class="p-4">Jurusan</th>
+                        <th class="p-4 text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($kelas as $item)
+                        <tr class="border-b border-white/10 hover:bg-white/5 transition duration-150">
+                            <td class="p-4">{{ $item->nama_kelas }}</td>
+                            <td class="p-4">{{ $item->level_kelas }}</td>
+                            <td class="p-4">{{ $item->jurusan->nama_jurusan }}</td>
+                            <td class="p-4 text-right">
+                                <div x-data="{ open: false }" @click.outside="open = false" class="relative inline-block">
+                                    <button @click="open = !open" class="text-white/70 hover:text-white transition">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                        </svg>
+                                    </button>
+                                    <div x-show="open" x-transition class="absolute right-0 w-40 bg-gray-800/90 backdrop-blur-xl border border-white/20 rounded-lg shadow-lg z-10 @if($loop->last) bottom-full mb-2 @else mt-2 @endif">
+                                        <a href="{{ route('kelas.edit', $item->id) }}" class="block px-4 py-2 text-sm text-white hover:bg-white/20 w-full text-left rounded-t-lg">Edit</a>
+                                        <form action="{{ route('kelas.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Hapus data?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="block px-4 py-2 text-sm text-red-400 hover:bg-white/20 w-full text-left rounded-b-lg">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Nama Kelas</th>
-                <th>Level</th>
-                <th>Jurusan</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach ($kelas as $item)
-                <tr>
-                    <td>{{ $item->nama_kelas }}</td>
-                    <td>{{ $item->level_kelas }}</td>
-                    <td>{{ $item->jurusan->nama_jurusan }}</td>
-
-                    <td>
-                        <a href="{{ route('kelas.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
-
-                        <form action="{{ route('kelas.destroy', $item->id) }}"
-                              method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button onclick="return confirm('Hapus data?')" class="btn btn-danger btn-sm">
-                                Hapus
-                            </button>
-                        </form>
-
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-
-    </table>
-
-</div>
 </x-app-layout>

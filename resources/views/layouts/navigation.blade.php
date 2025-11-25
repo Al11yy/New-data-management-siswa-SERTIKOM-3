@@ -43,6 +43,13 @@
                 </x-nav-link>
             </li>
 
+            <li>
+                <x-nav-link :href="route('user_management.index')"
+                    :active="request()->routeIs('user_management.*')" class="w-full">
+                    User Management
+                </x-nav-link>
+            </li>
+
         </ul>
     </div>
 

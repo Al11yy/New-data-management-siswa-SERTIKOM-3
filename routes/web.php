@@ -12,6 +12,7 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\KelasDetailController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserManagementController;
 
 // ==========================================
 // ROUTE HALAMAN UTAMA (PUBLIC)
@@ -57,8 +58,18 @@ Route::middleware('auth')->group(function () {
     // Siswa
     Route::resource('siswa', SiswaController::class);
 
-    // Kelas Detail (riwayat kelas)
+    // route resource yang sudah ada
     Route::resource('kelas_detail', KelasDetailController::class);
+
+    // route untuk ganti kelas (dipanggil dari detail.blade)
+    Route::post('/kelas-detail/ganti-kelas/{siswa}', [KelasDetailController::class, 'gantiKelas'])
+        ->name('kelas_detail.gantiKelas');
+
+    Route::resource('user_management', UserManagementController::class);
+
+
+
+
 });
 
 // ==========================================

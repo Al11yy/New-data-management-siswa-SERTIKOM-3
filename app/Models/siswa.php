@@ -15,23 +15,29 @@ class Siswa extends Model
         'jenis_kelamin',
         'tanggal_lahir',
         'alamat',
-        'kelas_id',
         'jurusan_id',
+        'kelas_id',
         'tahun_ajar_id',
     ];
 
-    public function kelas()
-    {
-        return $this->belongsTo(Kelas::class);
-    }
-
     public function jurusan()
     {
-        return $this->belongsTo(Jurusan::class);
+        return $this->belongsTo(Jurusan::class, 'jurusan_id');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 
     public function tahunAjar()
     {
-        return $this->belongsTo(tahun_ajar::class);
+        return $this->belongsTo(tahun_ajar::class, 'tahun_ajar_id');
+    }
+
+    // relasi ke tabel kelas_details (riwayat kelas)
+    public function kelasDetails()
+    {
+        return $this->hasMany(kelas_detail::class, 'siswa_id');
     }
 }

@@ -1,25 +1,33 @@
 <x-app-layout>
-<div class="container mt-4">
+    <div class="p-6">
+        <div class="max-w-2xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-8">
+            <h1 class="text-3xl font-extrabold text-white mb-8">Tambah Tahun Ajar Baru</h1>
 
-    <h3>Tambah Tahun Ajar</h3>
+            <form action="{{ route('tahun_ajar.store') }}" method="POST">
+                @csrf
+                <div class="space-y-6">
+                    <div>
+                        <label for="kode_tahun_ajar" class="block text-slate-300 text-sm font-bold mb-2">Kode Tahun Ajar</label>
+                        <input type="text" name="kode_tahun_ajar" id="kode_tahun_ajar" required
+                            class="w-full bg-slate-700/50 border border-white/20 rounded-xl text-white p-3 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
+                    </div>
+                    <div>
+                        <label for="nama_tahun_ajar" class="block text-slate-300 text-sm font-bold mb-2">Nama Tahun Ajar</label>
+                        <input type="text" name="nama_tahun_ajar" id="nama_tahun_ajar" required
+                            class="w-full bg-slate-700/50 border border-white/20 rounded-xl text-white p-3 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
+                    </div>
+                </div>
 
-    <form action="{{ route('tahun_ajar.store') }}" method="POST">
-        @csrf
-
-        <div class="mb-3">
-            <label>Kode Tahun Ajar</label>
-            <input type="text" name="kode_tahun_ajar" class="form-control" required>
+                <div class="flex items-center justify-between mt-8">
+                    <a href="{{ route('tahun_ajar.index') }}" class="text-cyan-400 hover:text-white transition">
+                        &larr; Kembali
+                    </a>
+                    <button type="submit"
+                        class="px-8 py-3 bg-cyan-500 text-white font-bold rounded-xl shadow-lg hover:bg-cyan-600 transition duration-200 transform hover:scale-105">
+                        Simpan
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <div class="mb-3">
-            <label>Nama Tahun Ajar</label>
-            <input type="text" name="nama_tahun_ajar" class="form-control" required>
-        </div>
-
-        <button class="btn btn-primary">Simpan</button>
-        <a href="{{ route('tahun_ajar.index') }}" class="btn btn-secondary">Kembali</a>
-
-    </form>
-
-</div>
+    </div>
 </x-app-layout>
