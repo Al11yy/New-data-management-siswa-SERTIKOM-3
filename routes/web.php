@@ -18,7 +18,7 @@ use App\Http\Controllers\UserManagementController;
 // ROUTE HALAMAN UTAMA (PUBLIC)
 // ==========================================
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // ==========================================

@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    /* Glass card: light background in light mode, dark background in dark mode
+		 and ensure readable text color in both modes. */
+    .glass-card {
+        @apply bg-white/5 dark:bg-[#0b0b0b] text-[#1b1b18] dark:text-white;
+    }
+
+    /* Secondary button: dark button in light mode (white text),
+		 light button in dark mode (dark text) so it stays readable. */
+    .btn-secondary {
+        @apply inline-flex items-center gap-2 justify-center rounded-xl px-4 py-2.5 text-sm font-medium;
+        @apply bg-[#1b1b18] text-white border border-black/10 hover:bg-[#111111];
+        @apply dark:bg-white/10 dark:text-[#1b1b18] dark:border-white/[0.06] dark:hover:bg-white/20;
+    }
+}
+
+/* Ensure elements that explicitly use .text-white inside glass-card/glass-input
+     don't become unreadable in light mode: force them to inherit the card's text color.
+     In dark mode keep white. */
+@media (prefers-color-scheme: dark) {
+    .glass-card .text-white,
+    .glass-input.text-white,
+    .glass-input .text-white {
+        color: #fff !important;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .glass-card .text-white,
+    .glass-input.text-white,
+    .glass-input .text-white {
+        color: inherit !important;
+    }
+}

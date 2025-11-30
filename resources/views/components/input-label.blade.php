@@ -1,5 +1,6 @@
+<!-- Updated input label for glassmorphism -->
 @props(['value'])
 
-<label {{ $attributes->merge(['class' => 'block font-medium text-sm text-gray-700 dark:text-gray-300']) }}>
+<label {{ $attributes->merge(['class' => 'block text-white/70 text-sm font-medium mb-2']) }}>
     {{ $value ?? $slot }}
 </label>

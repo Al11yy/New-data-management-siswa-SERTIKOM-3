@@ -1,34 +1,41 @@
 <x-app-layout>
-    <div class="p-6">
-        <div class="max-w-2xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-8">
-            <h1 class="text-3xl font-extrabold text-white mb-8">Edit Jurusan</h1>
+    <!-- Redesigned jurusan edit form with glassmorphism -->
+    <div class="p-8">
+        <div class="max-w-xl mx-auto">
+            <!-- Header -->
+            <div class="mb-8">
+                <a href="{{ route('jurusan.index') }}" class="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm transition-colors duration-200 mb-4">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                    Kembali
+                </a>
+                <h1 class="text-2xl font-bold text-white tracking-tight">Edit Jurusan</h1>
+                <p class="text-white/50 mt-1">Perbarui informasi jurusan</p>
+            </div>
 
-            <form action="{{ route('jurusan.update', $jurusan->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="space-y-6">
-                    <div>
-                        <label for="kode_jurusan" class="block text-slate-300 text-sm font-bold mb-2">Kode Jurusan</label>
-                        <input type="text" name="kode_jurusan" id="kode_jurusan" required value="{{ $jurusan->kode_jurusan }}"
-                            class="w-full bg-slate-700/50 border border-white/20 rounded-xl text-white p-3 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
+            <!-- Form Card -->
+            <div class="glass-card rounded-2xl p-8">
+                <form action="{{ route('jurusan.update', $jurusan->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-white/70 text-sm font-medium mb-2">Kode Jurusan</label>
+                            <input type="text" name="kode_jurusan" value="{{ $jurusan->kode_jurusan }}" required class="w-full glass-input rounded-xl text-white p-3.5 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-white/70 text-sm font-medium mb-2">Nama Jurusan</label>
+                            <input type="text" name="nama_jurusan" value="{{ $jurusan->nama_jurusan }}" required class="w-full glass-input rounded-xl text-white p-3.5 text-sm">
+                        </div>
                     </div>
-                    <div>
-                        <label for="nama_jurusan" class="block text-slate-300 text-sm font-bold mb-2">Nama Jurusan</label>
-                        <input type="text" name="nama_jurusan" id="nama_jurusan" required value="{{ $jurusan->nama_jurusan }}"
-                            class="w-full bg-slate-700/50 border border-white/20 rounded-xl text-white p-3 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition">
-                    </div>
-                </div>
 
-                <div class="flex items-center justify-between mt-8">
-                    <a href="{{ route('jurusan.index') }}" class="text-cyan-400 hover:text-white transition">
-                        &larr; Kembali
-                    </a>
-                    <button type="submit"
-                        class="px-8 py-3 bg-cyan-500 text-white font-bold rounded-xl shadow-lg hover:bg-cyan-600 transition duration-200 transform hover:scale-105">
-                        Update
-                    </button>
-                </div>
-            </form>
+                    <div class="flex items-center justify-end gap-3 mt-8 pt-6 border-t border-white/[0.06]">
+                        <a href="{{ route('jurusan.index') }}" class="btn-secondary px-6 py-2.5 rounded-xl text-sm">Batal</a>
+                        <button type="submit" class="btn-primary px-6 py-2.5 rounded-xl text-sm">Update</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </x-app-layout>
