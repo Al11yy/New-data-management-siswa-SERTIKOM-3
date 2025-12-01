@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer components {
+    .page-wrapper {
+        @apply px-4 py-6 sm:px-6 lg:px-10;
+    }
+
     /* Glass card: light background in light mode, dark background in dark mode
 		 and ensure readable text color in both modes. */
     .glass-card {

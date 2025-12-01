@@ -7,6 +7,9 @@
 
         <title>{{ config('app.name', 'EduData') }}</title>
 
+         <!-- Favicon -->
+        <link rel="icon" type="image/png" href="{{ asset('images/Logojir.png') }}">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +24,7 @@
             @include('layouts.navigation')
 
             <!-- Page Content with sidebar offset -->
-            <main class="ml-72 min-h-screen">
+            <main class="min-h-screen pt-24 lg:pt-0 lg:ml-72">
                 {{ $slot }}
             </main>
         </div>

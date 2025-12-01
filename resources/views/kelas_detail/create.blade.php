@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="p-6">
+    <div class="page-wrapper">
         <div class="max-w-4xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-8 relative">
             <!-- Decorative elements -->
             <div class="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 w-48 h-48 rounded-full bg-cyan-500/5 opacity-50 blur-2xl"></div>

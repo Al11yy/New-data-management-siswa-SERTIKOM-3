@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Enhanced siswa edit form with section-based layout -->
-    <div class="p-6 lg:p-10">
+    <div class="page-wrapper">
         <div class="max-w-4xl mx-auto">
             <!-- Header -->
             <div class="mb-8">

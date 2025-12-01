@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Redesigned kelas create form with glassmorphism -->
-    <div class="p-8">
+    <div class="page-wrapper">
         <div class="max-w-2xl mx-auto">
             <!-- Header -->
             <div class="mb-8">

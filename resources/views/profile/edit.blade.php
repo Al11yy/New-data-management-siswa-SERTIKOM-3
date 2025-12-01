@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Enhanced profile edit with modern sections -->
-    <div class="p-6 lg:p-10">
+    <div class="page-wrapper">
         <div class="max-w-3xl mx-auto">
             <!-- Header -->
             <div class="mb-10">

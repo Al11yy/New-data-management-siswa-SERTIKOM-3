@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="p-6">
+    <div class="page-wrapper">
 
         @if (session('success'))
             <div class="mb-6 p-4 bg-green-500/20 border border-green-500/30 text-green-300 rounded-xl">

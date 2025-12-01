@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Redesigned jurusan create form with glassmorphism -->
-    <div class="p-8">
+    <div class="page-wrapper">
         <div class="max-w-xl mx-auto">
             <!-- Header -->
             <div class="mb-8">

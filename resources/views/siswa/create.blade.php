@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Enhanced siswa create form with better layout -->
-    <div class="p-6 lg:p-10">
+    <div class="page-wrapper">
         <div class="max-w-4xl mx-auto">
             <!-- Header -->
             <div class="mb-8">
@@ -66,7 +66,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
                                 <label class="block text-white/70 text-sm font-medium mb-2.5">Jurusan</label>
-                                <select name="jurusan_id" required class="w-full glass-input rounded-xl text-white px-4 py-4 text-sm appearance-none cursor-pointer">
+                                <select name="jurusan_id" required class="w-full glass-input rounded-xl text-black px-4 py-4 text-sm appearance-none cursor-pointer">
                                     <option value="" class="bg-[#141416]">Pilih jurusan</option>
                                     @foreach($jurusans as $jurusan)
                                         <option value="{{ $jurusan->id }}" class="bg-[#141416]">{{ $jurusan->nama_jurusan }}</option>
@@ -84,7 +84,7 @@
                             </div>
                             <div>
                                 <label class="block text-white/70 text-sm font-medium mb-2.5">Tahun Ajar</label>
-                                <select name="tahun_ajar_id" required class="w-full glass-input rounded-xl text-white px-4 py-4 text-sm appearance-none cursor-pointer">
+                                <select name="tahun_ajar_id" required class="w-full glass-input rounded-xl text-black px-4 py-4 text-sm appearance-none cursor-pointer">
                                     <option value="" class="bg-[#141416]">Pilih tahun ajar</option>
                                     @foreach($tahunAjars as $tahunAjar)
                                         <option value="{{ $tahunAjar->id }}" class="bg-[#141416]">{{ $tahunAjar->nama_tahun_ajar }}</option>
@@ -113,8 +113,8 @@
 
                     <!-- Actions -->
                     <div class="flex flex-col sm:flex-row items-center justify-end gap-3 pt-8 border-t border-white/[0.04]">
-                        <a href="{{ route('siswa.index') }}" class="w-full sm:w-auto btn-secondary px-8 py-3.5 rounded-xl text-sm text-center">Batal</a>
-                        <button type="submit" class="w-full sm:w-auto btn-primary px-8 py-3.5 rounded-xl text-sm">Simpan Data Siswa</button>
+                        <a href="{{ route('siswa.index') }}" class="w-full sm:w-auto btn-secondary text-white px-8 py-3.5 rounded-xl text-sm text-center">Batal</a>
+                        <button type="submit" class="w-full sm:w-auto btn-primary text-white px-8 py-3.5 rounded-xl text-sm">Simpan Data Siswa</button>
                     </div>
                 </form>
             </div>

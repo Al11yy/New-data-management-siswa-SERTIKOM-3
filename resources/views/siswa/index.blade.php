@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Enhanced siswa index with card-based layout -->
-    <div class="p-6 lg:p-10">
+    <div class="page-wrapper">
         @if (session('success'))
             <div class="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl flex items-center gap-3">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -17,7 +17,7 @@
                 <p class="text-white/50 mt-1">Kelola semua data siswa yang terdaftar dalam sistem</p>
             </div>
             <div class="flex items-center gap-3">
-                <a href="{{ route('siswa.create') }}" class="btn-primary px-6 py-3 rounded-xl text-sm flex items-center gap-2.5">
+                <a href="{{ route('siswa.create') }}" class="btn-primary text-white px-6 py-3 rounded-xl text-sm flex items-center gap-2.5">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>

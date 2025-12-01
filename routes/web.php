@@ -21,19 +21,19 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// ==========================================
-// ROUTE DASHBOARD (HARUS LOGIN)
-// ==========================================
+    // ==========================================
+    // ROUTE DASHBOARD (HARUS LOGIN)
+    // ==========================================
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->middleware(['auth'])
+        ->name('dashboard');
 
 
-// ==========================================
-// ROUTE YANG HANYA BISA DIAKSES SETELAH LOGIN
-// ==========================================
-Route::middleware('auth')->group(function () {
+    // ==========================================
+    // ROUTE YANG HANYA BISA DIAKSES SETELAH LOGIN
+    // ==========================================
+    Route::middleware('auth')->group(function () {
 
     // ===============================
     // PROFILE

@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Redesigned siswa detail with glassmorphism -->
-    <div class="p-8">
+    <div class="page-wrapper">
         @if(session('success'))
             <div class="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl flex items-center gap-3">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
