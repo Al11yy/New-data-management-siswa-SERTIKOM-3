@@ -89,13 +89,5 @@ Default akun hasil seeder:
 | User Management       | `UserManagementController`, `resources/views/user_management/*`            | List avatar, edit profil dengan upload foto                             |
 | Profile & Auth        | `ProfileController`, `resources/views/profile/*`, `resources/views/auth/*`  | Halaman profil, form login/forgot-password bertema gelap               |
 
-## Catatan Presentasi
-
-- Tekankan bahwa dashboard menyajikan insight real-time (grafik + log aktivitas) sehingga manajemen cepat mengambil keputusan.
-- Tunjukkan riwayat kenaikan kelas sebagai diferensiasi: setiap perpindahan otomatis terekam pada `kelas_details`.
-- Sebutkan UI bertema glassmorphism + mobile-first, memudahkan demo ke stakeholder non-teknis.
-- Jelaskan roadmap keamanan: middleware `is_admin`, validasi filter dashboard, dan kontrol akses lanjutan.
-
----
 
 Lisensi mengikuti Laravel (MIT). Untuk pertanyaan lebih lanjut, silakan hubungi tim pengembang internal SMK Pesat.
