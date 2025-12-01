@@ -1,59 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="public/images/Logojir.png" alt="EduData Logo" width="120" />
 </p>
 
-## About Laravel
+# EduData – Sistem Manajemen Siswa SMK Pesat
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+EduData adalah aplikasi internal berbasis Laravel yang membantu tim administrasi sekolah mengelola data akademik secara terpusat. Proyek ini memadukan dashboard interaktif, automasi laporan statistik, serta modul CRUD lengkap untuk setiap entitas penting di lingkungan SMK Pesat.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Gambaran Singkat
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Target pengguna:** staf tata usaha, guru wali, dan admin sekolah.
+- **Tujuan utama:** menyederhanakan pengelolaan siswa, kelas, jurusan, tahun ajar, serta aktivitas kenaikan kelas.
+- **Nilai jual:** satu dashboard terpadu dengan visualisasi tren 7 hari, log aktivitas lintas entitas, dan akses cepat ke aksi penting.
 
-## Learning Laravel
+## Fitur Utama
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+1. **Dashboard Interaktif**
+   - Statistik jumlah siswa, kelas, jurusan, dan tahun ajar secara real-time.
+   - Grafik penambahan siswa 7 hari terakhir plus filter dinamis (jurusan, kelas, gender).
+   - Log aktivitas terbaru yang menggabungkan perubahan pada siswa, kelas, jurusan, dan tahun ajar.
+   - Kartu aksi cepat (Tambah Siswa/Kelas/Jurusan/Tahun Ajar) serta daftar siswa terbaru.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. **Manajemen Data Siswa**
+   - CRUD lengkap dengan relasi ke jurusan, kelas, dan tahun ajar.
+   - Halaman detail menampilkan profil, riwayat kenaikan kelas, dan modal ganti kelas.
+   - Dukungan attachment histori kelas melalui tabel `kelas_details`.
 
-## Laravel Sponsors
+3. **Manajemen Kelas & Jurusan**
+   - Pengaturan level kelas, jurusan terkait, dan validasi otomatis (mis. level 1–12).
+   - Jurusan dapat melihat mahasiswa terdaftar melalui relasi Eloquent.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. **Tahun Ajar**
+   - CRUD untuk kode/nama tahun ajar, termasuk keterkaitan ke siswa dan riwayat kelas.
 
-### Premium Partners
+5. **Manajemen User**
+   - Daftar user dengan avatar, unggah foto profil ke storage publik, serta form update data dasar.
+   - Middleware `is_admin` siap digunakan untuk membatasi akses hanya bagi akun admin.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+6. **Profil Pengguna & Autentikasi**
+   - Halaman profile bawaan Laravel Breeze untuk update data diri dan penghapusan akun.
+   - Tampilan login guest bertema gelap dengan dukungan Alpine dan Tailwind.
 
-## Contributing
+7. **UI/UX Modern**
+   - Layout glassmorphism adaptif (mobile + desktop sidebar).
+   - Komponen Alpine.js untuk dropdown, modal filter, dan menu aksi.
+   - Chart.js untuk visualisasi data.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Teknologi & Arsitektur
 
-## Code of Conduct
+- **Framework:** Laravel 12 (Breeze + Vite).
+- **Front-end:** Tailwind CSS, Alpine.js, Chart.js.
+- **Database:** MySQL/MariaDB (melalui Eloquent ORM).
+- **Storage:** Public disk untuk foto pengguna.
+- **Auth:** Laravel Breeze dengan middleware `auth` + alias `is_admin`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Cara Menjalankan
 
-## Security Vulnerabilities
+```bash
+# 1. Install dependensi PHP & JS
+composer install
+npm install
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 2. Setup environment
+cp .env.example .env
+php artisan key:generate
 
-## License
+# 3. Migrasi & seeding data awal
+php artisan migrate --seed
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 4. Jalankan server & asset bundler
+php artisan serve
+npm run dev
+```
+
+Default akun hasil seeder:
+
+- Admin — `admin@gmail.com` / `password`
+- Guru  — `guru@gmail.com` / `password`
+
+## Struktur Modul
+
+| Modul                 | File Utama                                                                 | Catatan                                                                 |
+|-----------------------|-----------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| Dashboard             | `app/Http/Controllers/DashboardController.php`, `resources/views/dashboard` | Statistik, grafik Chart.js, filter Alpine.js                           |
+| Siswa                 | `SiswaController`, `resources/views/siswa/*`                                | CRUD, detail siswa, riwayat kelas, modal ganti kelas                   |
+| Kelas & Jurusan       | `KelasController`, `JurusanController`, view terkait                        | Validasi level, relasi jurusan                                         |
+| Tahun Ajar            | `TahunAjarController`, view terkait                                        | Pengelolaan periode akademik                                           |
+| Kelas Detail          | `KelasDetailController`, `resources/views/kelas_detail/*`                   | Riwayat perpindahan kelas, status aktif/nonaktif                       |
+| User Management       | `UserManagementController`, `resources/views/user_management/*`            | List avatar, edit profil dengan upload foto                             |
+| Profile & Auth        | `ProfileController`, `resources/views/profile/*`, `resources/views/auth/*`  | Halaman profil, form login/forgot-password bertema gelap               |
+
+## Catatan Presentasi
+
+- Tekankan bahwa dashboard menyajikan insight real-time (grafik + log aktivitas) sehingga manajemen cepat mengambil keputusan.
+- Tunjukkan riwayat kenaikan kelas sebagai diferensiasi: setiap perpindahan otomatis terekam pada `kelas_details`.
+- Sebutkan UI bertema glassmorphism + mobile-first, memudahkan demo ke stakeholder non-teknis.
+- Jelaskan roadmap keamanan: middleware `is_admin`, validasi filter dashboard, dan kontrol akses lanjutan.
+
+---
+
+Lisensi mengikuti Laravel (MIT). Untuk pertanyaan lebih lanjut, silakan hubungi tim pengembang internal SMK Pesat.
