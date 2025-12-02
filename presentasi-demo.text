@@ -1,0 +1,65 @@
+Script Demo EduData - Bagian Demonstrasi
+========================================
+
+[Pembukaan]
+Selamat pagi/siang semua, saya akan mendemokan EduData, sistem manajemen siswa internal untuk SMK Pesat yang dibuat dengan Laravel 12, Tailwind, Alpine.js, dan Chart.js. Fokus utama kita adalah menggantikan spreadsheet manual dengan satu dashboard terpadu yang mengatur siswa, kelas, jurusan, tahun ajar, user, dan riwayat perpindahan kelas secara real-time.
+Di demo ini saya jelaskan layar per layar sambil menyebutkan alasan desain dan jawaban dari pertanyaan yang kemungkinan muncul ketika kita presentasi ke pimpinan sekolah atau teman sesama developer.
+
+[Login & Hak Akses]
+Saya mulai dari halaman login bertema gelap. Branding SMK Pesat, glass card, dan CTA "Masuk ke Dashboard" dibuat konsisten agar staf tata usaha yang berganti shift tetap ingat bahwa ini aplikasi internal. Laravel Breeze otomatis memberi proteksi CSRF dan validasi error per field.
+Setelah login, hak akses langsung dibatasi oleh middleware `auth` + `role`. Peran guru hanya bisa melihat menu Data Siswa dan Dashboard, sedangkan admin mendapatkan menu penuh: siswa, kelas, jurusan, tahun ajar, riwayat kelas, dan user management. Dengan cara ini, jika ada pertanyaan "apa buktinya role diterapkan?", saya tinggal tunjukkan `routes/web.php` yang memisahkan route guru (`role:guru`) dan admin (`role:admin`).
+
+[Layout & Navigasi]
+Seluruh halaman memakai layout glassmorphism (`resources/views/layouts/app.blade.php`) dengan sidebar responsif. Di mobile sidebar menjadi drawer menggunakan Alpine.js (`x-data="{ mobileOpen: false }"`), jadi kalau ditanya soal responsivitas saya tinggal tunjukkan transisi `x-show` plus fallback hero di `navigation.blade.php`. Bagian footer sidebar memperlihatkan foto profil dan tombol logout, sehingga pengguna sadar bahwa aktivitas tercatat.
+
+[Dashboard]
+1. Hero Section: kartu pertama menyapa admin dan memunculkan waktu real-time menggunakan `now()->translatedFormat`. Pertanyaan "kenapa ada hero besar?" saya jawab: section ini memosisikan dashboard sebagai command center, menampilkan status sistem (indikator hijau pulse) dan identitas user agar tidak salah akun ketika ganti shift.
+2. Quick Stats: empat kartu hasil loop `$statCards` (total siswa, kelas, jurusan, tahun ajar). Alasan keberadaannya adalah agar kepala program bisa langsung mengonfirmasi angka global tanpa membuka tiap modul. Data diambil dari query `Siswa::count()` dan sejenisnya sehingga dijamin sinkron karena semuanya diambil real-time.
+3. Grafik Penambahan Siswa: pertanyaan paling sering "kenapa ada chart di situ?" Chart ini memvisualisasikan penambahan siswa 7 hari terakhir (`DashboardController` melintasi `Carbon::today()->subDays($i)` dan menghitung `Siswa::whereDate('created_at', $date)`). Saya jelaskan bahwa tren 7 hari membantu mendeteksi lonjakan entri (misal saat PPDB) tanpa membaca tabel panjang. Chart.js diberi gradient untuk menegaskan style modern dan ada badge "Live update" supaya non-teknis mengerti bahwa data otomatis berubah setiap refresh.
+4. Aktivitas Terbaru: Kolom kanan menggabungkan log siswa, kelas, jurusan, dan tahun ajar. Kalau ada pertanyaan "bagaimana log-nya konsisten antar entitas?" saya jelaskan bahwa controller mengumpulkan masing-masing 5 aktivitas, menggabungkannya `collect()->merge()` lalu sorting `sortByDesc('waktu')` sebelum menampilkan 5 terbaru. Format "Menambah"/"Memperbarui" dibedakan lewat pembanding `created_at` vs `updated_at` sehingga operator bisa tahu aksi apa yang barusan terjadi.
+5. Tabel Siswa Terbaru + Filter: Bagian ini menampilkan 5 siswa terbaru lengkap dengan NISN, jurusan, kelas, dan tombol edit. Filter di-trigger oleh modal Alpine `showFilter` dan memanfaatkan query string `filter_type` dan `filter_value` sehingga kita bisa live filtering berdasarkan jurusan/kelas/gender tanpa Ajax. Kemungkinan pertanyaan "bagaimana cara nya menggabungkan si NISN dan lainnya?" saya jawab: di `SiswaController@index` kita memanggil `Siswa::with(['jurusan','kelas','tahunAjar'])`, jadi satu record siswa sudah membawa nama jurusan, kelas, dan tahun ajar. Tabel tinggal memanggil `$s->jurusan->nama_jurusan` dsb. Karena foreign key disimpan dalam tabel `siswas`, kita tidak perlu query tambahan.
+6. Aksi Cepat: Empat kartu "Tambah Siswa/Kelas/Jurusan/Tahun Ajar" muncul karena di tahap wawancara user, mereka bilang aksi yang paling sering dilakukan adalah menambah entitas. Jadi ketika ditanya "kenapa ada quick access?" saya jawab: untuk memotong 2 langkah (buka menu dulu) menjadi 1 klik dari dashboard, dan setiap kartu langsung diarahkan ke route `create`. Visual paling kanan juga membantu user baru memahami scope modul.
+7. Filter Modal: Modal ini jawaban kalau ada yang mempertanyakan "kenapa filter tidak ditempel di tabel?". Karena dashboard fokus pada highlight, kita sembunyikan filter di modal, tapi secara teknis tetap memanfaatkan `request('filter_type')` sehingga parameter disalin otomatis saat user membuka lagi.
+
+[Modul Data Siswa]
+Halaman index (`resources/views/siswa/index.blade.php`) memakai kartu kaca dengan kolom lengkap. Dropdown aksi per baris menggunakan Alpine `x-data="{ open: false }"` untuk akses cepat ke Detail, Edit, dan Hapus. Ketika diminta menjelaskan integrasi data detail, saya perlihatkan bahwa view menampilkan `{{ $item->nisn }}` dalam font monospace agar operator mudah mendeteksi kesalahan digit.
+Form tambah/edit (`siswa.create` dan `siswa.edit`) saya pecah menjadi tiga section: Data Pribadi, Data Akademik, dan Alamat. Validasi `SiswaController@store` memastikan NISN unik, gender masuk enumerasi `laki-laki/perempuan`, dan foreign key (`jurusan_id`, `kelas_id`, `tahun_ajar_id`) wajib ada. Ini jawaban ketika ditanya "bagaimana menjamin NISN tidak ganda?".
+Halaman detail (`siswa.detail`) menampilkan profil, NISN, kelas aktif, jurusan, alamat, dan timeline `kelasDetails`. Tombol "Ganti Kelas" membuka modal yang memanggil `kelas_detail.gantiKelas`. Kalau saya mendapat pertanyaan "bagaimana memastikan riwayat kelas tidak hilang saat siswa dipindah?", jawabannya: saat ganti kelas, controller mem-validasi input, menandai seluruh riwayat aktif menjadi `nonaktif`, memperbarui `kelas_id` di tabel siswa, lalu membuat record baru `kelas_details` dengan status `aktif`, still menyalin `tahun_ajar_id` yang sedang berlaku. Tabel riwayat menunjukkan status `aktif/nonaktif` dengan badge berbeda dan kolom `diffForHumans()` agar kapan pemindahan terjadi mudah dibaca.
+
+[Modul Kelas Detail]
+Menu Kelas Detail (`kelas_detail.index`) menampilkan seluruh histori perpindahan lintas siswa. Admin bisa tambah manual (untuk migrasi data lama) lewat form yang memaksa pilihan siswa, kelas, tahun ajar, dan status `aktif/nonaktif`. Jika ada pertanyaan "kenapa riwayat dipisah ke tabel sendiri?", alasan utamanya agar mutasi kelas tidak menumpuk di tabel `siswas` dan kita punya audit trail bersih. Selain itu, modul ini dipakai sebagai referensi ketika tim kesiswaan perlu rekap perpindahan massal.
+
+[Modul Jurusan]
+Index jurusan menampilkan kartu sederhana dengan nama dan kode jurusan. Pertanyaan "kenapa butuh kode jurusan?" saya jawab: kode digunakan untuk penyusunan kelas (`kelas.level + kode`) dan laporan kurikulum, sehingga field ini divalidasi unik di `JurusanController`. Menu aksi menyediakan edit/hapus sehingga restructure kurikulum mudah dilakukan.
+
+[Modul Kelas]
+Kelas punya relasi langsung ke jurusan. Di form `kelas.create`, admin wajib mengisi nama kelas, level 1-12 (divalidasi agar tidak ada level aneh), dan memilih jurusan. Ketika seseorang bertanya "mengapa level dibatasi 1-12?", saya jelaskan bahwa ini sengaja memvalidasi input karena SMK hanya punya kelas X-XII, dan kalau kelak diadaptasi ke sekolah lain nilai ini tetap bisa diperluas hanya dengan menyesuaikan validasi.
+
+[Modul Tahun Ajar]
+Tahun ajar berdiri sendiri agar setiap data siswa dan riwayat kelas mengacu pada periode akademik tertentu. Controller memastikan `kode_tahun_ajar` unik. Ini krusial saat membuat laporan lintas tahun; kita tinggal filter `siswa` berdasarkan `tahun_ajar_id` tertentu.
+
+[User Management]
+Menu User Management menampilkan kartu avatar. Kalau user belum upload foto, inisial otomatis muncul. Dalam edit form, admin bisa ganti nama, email, dan unggah foto baru. Storage menggunakan disk `public` sehingga file tersedia untuk `asset('storage/...')`. Ada logika penghapusan file lama agar storage tidak bengkak, jadi jika ditanya soal manajemen file, saya bisa tunjukkan `Storage::disk('public')->delete($user->photo)` sebelum menyimpan yang baru.
+
+[Profil Pengguna & Autentikasi]
+Setiap user bisa masuk ke halaman Profile untuk update data diri, ganti password, atau menghapus akun. Ini memanfaatkan komponen Breeze bawaan sehingga saya bisa menjelaskan bahwa keamanan password tetap mengikuti hashing Laravel modern.
+Halaman login/forgot password juga sudah siap (Breeze). Default akun dari seeder: admin (admin@gmail.com/password) dan guru (guru@gmail.com/password) untuk memudahkan sesi demo.
+
+[Arsitektur & Alasan Teknis Tambahan]
+- Model `Siswa`, `Kelas`, `Jurusan`, `tahun_ajar`, dan `kelas_detail` saling terhubung lewat relasi Eloquent yang sudah ditunjukkan di `app/Models`. Jadi kalau ada pertanyaan "bagaimana cara menggabungkan data lintas tabel?", jawaban singkatnya: kita simpan foreign key di tabel siswa, dan di query kita panggil `with()` agar Laravel eager load data terkait sehingga NISN, jurusan, kelas, dan tahun ajar bisa tampil dalam satu tabel tanpa query bertumpuk.
+- UI memakai Tailwind + komponen khusus seperti `glass-card` sehingga output konsisten. Alpine dipakai untuk komponen interaktif (dropdown aksi, modal filter, drawer mobile) demi menghindari dependensi berat.
+- Chart memanfaatkan CDN Chart.js, gradient dibangun lewat `canvas.getContext('2d')` jadi performa ringan. Kalau jaringan mati, view tetap aman karena chart init dibungkus `if (!canvas) return`.
+- Semua form menyertakan `@csrf` dan memanfaatkan `@error` di level Blade, jadi kalau audience bertanya soal keamanan input kita sudah punya jawabannya.
+- Storage foto user menggunakan folder `storage/app/public/users`. Laravel symbolic link dari `public/storage` memastikan file bisa diakses oleh `<img>` di sidebar dan kartu user.
+- Aktivitas log memanfaatkan `Carbon::diffForHumans()` agar timestamp lebih mudah dicerna oleh non-teknis.
+
+[Daftar Pertanyaan & Jawaban Cepat]
+1. "Kenapa ada chart di dashboard?" -> Untuk memantau tren penambahan siswa 7 hari terakhir supaya admin tahu kapan lonjakan data terjadi tanpa membaca laporan panjang. Datanya diambil otomatis dari timestamp `created_at` di tabel siswa.
+2. "Kenapa ada Quick Access di sisi kanan?" -> Karena berdasarkan wawancara user, aksi teratas setiap hari adalah tambah siswa/kelas/jurusan/tahun. Menaruh shortcut di dashboard mengurangi klik dan mengarahkan user baru supaya tahu modul mana saja yang tersedia.
+3. "Bagaimana cara menggabungkan NISN dan data kelas/jurusan?" -> Struktur tabel `siswas` menyimpan `nisn` + `jurusan_id` + `kelas_id` + `tahun_ajar_id`. Controller memanggil `Siswa::with(...)` untuk eager load tiap relasi, lalu Blade tinggal memanggil properti turunan. Jadi NISN selalu tampil bersama kelas/jurusan karena join dilakukan oleh Eloquent.
+4. "Bagaimana proses ganti kelas menjaga riwayat?" -> Setiap perpindahan memicu `kelas_detail.gantiKelas`: validasi kelas baru, nonaktifkan record lama, update kolom `kelas_id` di `siswas`, dan buat record baru di `kelas_details` dengan status `aktif`. Dengan begitu, riwayat tidak hilang dan status aktif selalu hanya satu.
+5. "Mengapa modul Tahun Ajar/Jurusan dipisah?" -> Karena data tersebut dipakai lintas fitur. Tahun ajar menjadi foreign key di siswa dan riwayat kelas, sedangkan jurusan menjadi induk bagi kelas dan siswa. Memisahkan modul memastikan data referensi bersih dan bisa dipakai ulang.
+6. "Bagaimana memastikan data user aman?" -> Laravel auth memanfaatkan hashing `password` bawaan, foto disimpan di storage publik dengan validasi MIME `jpg/png` max 2 MB, dan setiap request terproteksi CSRF token.
+
+[Penutup]
+Setelah semua modul didemokan, saya tekankan lagi bahwa seluruh data saling terhubung: dashboard menarik angka dari modul CRUD, log aktivitas otomatis tersusun begitu ada perubahan, dan fitur seperti Quick Access atau filter di dashboard dibuat berdasarkan kebutuhan operasional real-day. Dengan teks ini saya siap menjawab pertanyaan detail selama sesi presentasi.

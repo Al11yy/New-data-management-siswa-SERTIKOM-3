@@ -37,10 +37,10 @@
 
                         <!-- Level Kelas -->
                         <div>
-                            <label class="block text-white font-medium mb-2">Level Kelas</label>
+                            <label class="block text-black font-medium mb-2">Level Kelas</label>
                             <select name="level_kelas" 
                                     required 
-                                    class="w-full px-4 py-3 rounded-lg border border-white/10 bg-white/5 text-white focus:border-white/20 focus:ring-1 focus:ring-white/20 outline-none transition cursor-pointer">
+                                    class="w-full px-4 py-3 rounded-lg border border-white/10 bg-white/5 text-black focus:border-white/20 focus:ring-1 focus:ring-white/20 outline-none transition cursor-pointer">
                                 <option value="10" @if($kelas->level_kelas == '10') selected @endif>10</option>
                                 <option value="11" @if($kelas->level_kelas == '11') selected @endif>11</option>
                                 <option value="12" @if($kelas->level_kelas == '12') selected @endif>12</option>
